@@ -166,3 +166,118 @@ export class UnauthorizedError extends AppError {
     this.name = 'UnauthorizedError';
   }
 }
+
+// Communication types
+export interface WhatsAppMessage {
+  to: string;
+  type: 'template' | 'text';
+  template?: {
+    name: string;
+    language: { code: string };
+    components: WhatsAppComponent[];
+  };
+  text?: {
+    body: string;
+  };
+}
+
+export interface WhatsAppComponent {
+  type: 'header' | 'body' | 'footer' | 'button';
+  parameters?: WhatsAppParameter[];
+  sub_type?: string;
+  index?: number;
+}
+
+export interface WhatsAppParameter {
+  type: 'text' | 'currency' | 'date_time' | 'image' | 'document';
+  text?: string;
+  currency?: {
+    fallback_value: string;
+    code: string;
+    amount_1000: number;
+  };
+  date_time?: {
+    fallback_value: string;
+  };
+  image?: {
+    link: string;
+  };
+  document?: {
+    link: string;
+    filename: string;
+  };
+}
+
+export interface WhatsAppResponse {
+  messaging_product: string;
+  contacts: Array<{
+    input: string;
+    wa_id: string;
+  }>;
+  messages: Array<{
+    id: string;
+  }>;
+}
+
+export interface EmailMessage {
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+  attachments?: EmailAttachment[];
+}
+
+export interface EmailAttachment {
+  filename: string;
+  content: Buffer | string;
+  contentType: string;
+}
+
+export type MessageType = 
+  | 'appointment_reminder_24h'
+  | 'appointment_reminder_2h'
+  | 'appointment_confirmation'
+  | 'birthday_greeting'
+  | 'post_care_followup'
+  | 'consent_form_request'
+  | 'payment_reminder'
+  | 'loyalty_reward';
+
+export interface MessageTemplate {
+  id: string;
+  type: MessageType;
+  name: string;
+  description: string;
+  channels: ('whatsapp' | 'email' | 'sms')[];
+  templates: {
+    [key in Locale]: {
+      whatsapp?: {
+        templateName: string;
+        fallbackText: string;
+      };
+      email?: {
+        subject: string;
+        html: string;
+        text: string;
+      };
+      sms?: {
+        text: string;
+      };
+    };
+  };
+  variables: string[];
+  isActive: boolean;
+}
+
+export interface CommunicationPreferences {
+  clientId: string;
+  whatsappEnabled: boolean;
+  emailEnabled: boolean;
+  smsEnabled: boolean;
+  appointmentReminders: boolean;
+  birthdayGreetings: boolean;
+  postCareFollowup: boolean;
+  marketingMessages: boolean;
+  preferredLanguage: Locale;
+  preferredChannel: 'whatsapp' | 'email' | 'sms';
+}

@@ -42,7 +42,6 @@
 
 - [x] 4. Modelos de datos y servicios base
 
-
 - [x] 4.1 Implementar esquemas Prisma completos
   - Crear todos los modelos de base de datos (Company, Store, User, Client, Artist, etc.)
   - Configurar relaciones y constraints con tipos generados automáticamente
@@ -61,8 +60,9 @@
   - **CRÍTICO**: Verificar que no existan errores de TypeScript (`tsc --noEmit`) antes de continuar
   - _Requisitos: 1, 7, 8_
 
-- [ ] 5. Gestión de clientes
-- [ ] 5.1 Crear componentes de gestión de clientes
+- [-] 5. Gestión de clientes
+
+- [x] 5.1 Crear componentes de gestión de clientes
   - Desarrollar formularios tipados para alta y edición de clientes
   - Implementar validación para menores de edad con información del tutor
   - Crear componente de perfil de cliente con historial completo
@@ -72,12 +72,15 @@
   - **CRÍTICO**: Verificar que no existan errores de TypeScript (`tsc --noEmit`) antes de continuar
   - _Requisitos: 7_
 
-- [ ] 5.2 Sistema de comunicaciones automáticas
+- [x] 5.2 Sistema de comunicaciones automáticas
   - Integrar WhatsApp Business API para envío de mensajes
   - Implementar sistema de templates de mensajes multiidioma
   - Crear servicio de felicitaciones de cumpleaños automáticas
   - Desarrollar sistema de seguimiento post-cuidado
   - Escribir tests de integración para comunicaciones
+  - **CRÍTICO**: Asegurar que todos los servicios usen tipos Prisma generados, no `any`
+  - **CRÍTICO**: Validar que todos los esquemas Zod estén correctamente tipados
+  - **CRÍTICO**: Verificar que no existan errores de TypeScript (`tsc --noEmit`) antes de continuar
   - _Requisitos: 7_
 
 - [ ] 6. Gestión de artistas y personal
