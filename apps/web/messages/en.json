@@ -1,0 +1,74 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "appointments": "Appointments",
+    "clients": "Clients",
+    "artists": "Artists",
+    "services": "Services",
+    "products": "Products",
+    "pos": "Point of Sale",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot your password?",
+    "rememberMe": "Remember me"
+  },
+  "appointments": {
+    "title": "Appointment Management",
+    "create": "New Appointment",
+    "calendar": "Calendar",
+    "client": "Client",
+    "artist": "Artist",
+    "service": "Service",
+    "date": "Date",
+    "time": "Time",
+    "duration": "Duration",
+    "status": "Status",
+    "notes": "Notes",
+    "price": "Price",
+    "deposit": "Deposit"
+  },
+  "clients": {
+    "title": "Client Management",
+    "create": "New Client",
+    "profile": "Client Profile",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "birthDate": "Birth Date",
+    "isMinor": "Is Minor",
+    "guardian": "Legal Guardian",
+    "medicalInfo": "Medical Information",
+    "imageRights": "Image Rights",
+    "loyaltyPoints": "Loyalty Points"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "system": "System"
+  }
+}

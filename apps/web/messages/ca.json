@@ -1,0 +1,74 @@
+{
+  "common": {
+    "loading": "Carregant...",
+    "save": "Desar",
+    "cancel": "Cancel·lar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "search": "Cercar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "yes": "Sí",
+    "no": "No",
+    "confirm": "Confirmar",
+    "back": "Tornar",
+    "next": "Següent",
+    "previous": "Anterior",
+    "close": "Tancar"
+  },
+  "navigation": {
+    "dashboard": "Panell Principal",
+    "appointments": "Cites",
+    "clients": "Clients",
+    "artists": "Artistes",
+    "services": "Serveis",
+    "products": "Productes",
+    "pos": "Punt de Venda",
+    "reports": "Informes",
+    "settings": "Configuració"
+  },
+  "auth": {
+    "signIn": "Iniciar Sessió",
+    "signOut": "Tancar Sessió",
+    "email": "Correu Electrònic",
+    "password": "Contrasenya",
+    "forgotPassword": "Has oblidat la contrasenya?",
+    "rememberMe": "Recordar-me"
+  },
+  "appointments": {
+    "title": "Gestió de Cites",
+    "create": "Nova Cita",
+    "calendar": "Calendari",
+    "client": "Client",
+    "artist": "Artista",
+    "service": "Servei",
+    "date": "Data",
+    "time": "Hora",
+    "duration": "Durada",
+    "status": "Estat",
+    "notes": "Notes",
+    "price": "Preu",
+    "deposit": "Dipòsit"
+  },
+  "clients": {
+    "title": "Gestió de Clients",
+    "create": "Nou Client",
+    "profile": "Perfil del Client",
+    "name": "Nom",
+    "email": "Correu Electrònic",
+    "phone": "Telèfon",
+    "birthDate": "Data de Naixement",
+    "isMinor": "És menor d'edat",
+    "guardian": "Tutor Legal",
+    "medicalInfo": "Informació Mèdica",
+    "imageRights": "Drets d'Imatge",
+    "loyaltyPoints": "Punts de Fidelitat"
+  },
+  "theme": {
+    "light": "Mode Clar",
+    "dark": "Mode Fosc",
+    "system": "Sistema"
+  }
+}

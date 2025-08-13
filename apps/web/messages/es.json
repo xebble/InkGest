@@ -1,0 +1,74 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "yes": "Sí",
+    "no": "No",
+    "confirm": "Confirmar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "close": "Cerrar"
+  },
+  "navigation": {
+    "dashboard": "Panel Principal",
+    "appointments": "Citas",
+    "clients": "Clientes",
+    "artists": "Artistas",
+    "services": "Servicios",
+    "products": "Productos",
+    "pos": "Punto de Venta",
+    "reports": "Reportes",
+    "settings": "Configuración"
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signOut": "Cerrar Sesión",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "rememberMe": "Recordarme"
+  },
+  "appointments": {
+    "title": "Gestión de Citas",
+    "create": "Nueva Cita",
+    "calendar": "Calendario",
+    "client": "Cliente",
+    "artist": "Artista",
+    "service": "Servicio",
+    "date": "Fecha",
+    "time": "Hora",
+    "duration": "Duración",
+    "status": "Estado",
+    "notes": "Notas",
+    "price": "Precio",
+    "deposit": "Depósito"
+  },
+  "clients": {
+    "title": "Gestión de Clientes",
+    "create": "Nuevo Cliente",
+    "profile": "Perfil del Cliente",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "phone": "Teléfono",
+    "birthDate": "Fecha de Nacimiento",
+    "isMinor": "Es menor de edad",
+    "guardian": "Tutor Legal",
+    "medicalInfo": "Información Médica",
+    "imageRights": "Derechos de Imagen",
+    "loyaltyPoints": "Puntos de Fidelidad"
+  },
+  "theme": {
+    "light": "Modo Claro",
+    "dark": "Modo Oscuro",
+    "system": "Sistema"
+  }
+}

@@ -1,0 +1,249 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id           String   @id @default(cuid())
+  name         String
+  settings     String   @default("{}")
+  subscription String   @default("basic")
+  stores       Store[]
+  users        User[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("companies")
+}
+
+model Store {
+  id              String        @id @default(cuid())
+  companyId       String
+  name            String
+  configuration   String        @default("{}")
+  timezone        String        @default("Europe/Madrid")
+  businessHours   String
+  company         Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+  clients         Client[]
+  artists         Artist[]
+  services        Service[]
+  products        Product[]
+  rooms           Room[]
+  sales           Sale[]
+
+  @@map("stores")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  role        String   @default("EMPLOYEE")
+  companyId   String
+  storeIds    String   @default("[]") // JSON array of store IDs
+  preferences String   @default("{}")
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  artist      Artist?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Client {
+  id              String        @id @default(cuid())
+  storeId         String
+  email           String
+  name            String
+  phone           String
+  birthDate       DateTime?
+  isMinor         Boolean       @default(false)
+  guardianInfo    String?       // Guardian information if minor (JSON string)
+  medicalInfo     String?       // Medical information (JSON string)
+  imageRights     Boolean       @default(false)
+  source          String?       // Client source/origin
+  loyaltyPoints   Int           @default(0)
+  store           Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+  documents       Document[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("clients")
+}
+
+model Artist {
+  id               String        @id @default(cuid())
+  storeId          String
+  userId           String        @unique
+  specialties      String        @default("[]") // JSON array of specialties
+  schedule         String        // Work schedule (JSON string)
+  commission       Float         @default(0.5)
+  googleCalendarId String?
+  store            Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointments     Appointment[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@map("artists")
+}
+
+model Appointment {
+  id            String    @id @default(cuid())
+  storeId       String
+  clientId      String
+  artistId      String
+  serviceId     String
+  roomId        String?
+  startTime     DateTime
+  endTime       DateTime
+  status        String    @default("SCHEDULED")
+  notes         String?
+  price         Float
+  deposit       Float?
+  googleEventId String?
+  store         Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  client        Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  artist        Artist    @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  service       Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  room          Room?     @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  payments      Payment[]
+  documents     Document[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("appointments")
+}
+
+model Service {
+  id              String        @id @default(cuid())
+  storeId         String
+  name            String
+  description     String?
+  duration        Int           // Duration in minutes
+  price           Float
+  category        String
+  requiresConsent Boolean       @default(true)
+  store           Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+  saleItems       SaleItem[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("services")
+}
+
+model Product {
+  id          String     @id @default(cuid())
+  storeId     String
+  name        String
+  description String?
+  price       Float
+  stock       Int        @default(0)
+  minStock    Int        @default(5)
+  batch       String?
+  expiryDate  DateTime?
+  store       Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  saleItems   SaleItem[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("products")
+}
+
+model Room {
+  id           String        @id @default(cuid())
+  storeId      String
+  name         String
+  description  String?
+  isAvailable  Boolean       @default(true)
+  store        Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("rooms")
+}
+
+model Sale {
+  id        String     @id @default(cuid())
+  storeId   String
+  clientId  String?
+  subtotal  Float
+  tax       Float
+  total     Float
+  store     Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  items     SaleItem[]
+  payments  Payment[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("sales")
+}
+
+model SaleItem {
+  id        String   @id @default(cuid())
+  saleId    String
+  productId String?
+  serviceId String?
+  quantity  Int
+  price     Float
+  discount  Float    @default(0)
+  sale      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  service   Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sale_items")
+}
+
+model Payment {
+  id              String       @id @default(cuid())
+  appointmentId   String?
+  saleId          String?
+  amount          Float
+  method          String
+  status          String       @default("PENDING")
+  transactionId   String?
+  installmentPlan String?      // Installment plan if applicable (JSON string)
+  cryptoDetails   String?      // Crypto payment details (JSON string)
+  appointment     Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  sale            Sale?        @relation(fields: [saleId], references: [id], onDelete: SetNull)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@map("payments")
+}
+
+model Document {
+  id            String       @id @default(cuid())
+  clientId      String
+  appointmentId String?
+  type          String
+  title         String
+  content       String       // HTML content
+  signed        Boolean      @default(false)
+  signedAt      DateTime?
+  signatureData String?      // Digital signature data (JSON string)
+  filePath      String?      // PDF file path
+  client        Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("documents")
+}
+
+// Enums are handled as string constants in the application layer
+// since SQLite doesn't support native enums
