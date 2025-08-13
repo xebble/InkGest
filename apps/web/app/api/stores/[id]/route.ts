@@ -123,7 +123,7 @@ async function handleDELETE(request: AuthenticatedRequest): Promise<NextResponse
       );
     }
 
-    console.error('Error deleting store:', error);
+    
     return NextResponse.json(
       { success: false, error: { code: 'INTERNAL_ERROR', message: 'Failed to delete store' } },
       { status: 500 }
