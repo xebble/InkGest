@@ -1,4 +1,11 @@
 {
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/companies/[id]/route": "app/api/companies/[id]/route.js",
+  "/api/companies/route": "app/api/companies/route.js",
+  "/api/stores/[id]/route": "app/api/stores/[id]/route.js",
+  "/api/stores/route": "app/api/stores/route.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/[locale]/page": "app/[locale]/page.js"
+  "/[locale]/page": "app/[locale]/page.js",
+  "/[locale]/(dashboard)/dashboard/page": "app/[locale]/(dashboard)/dashboard/page.js",
+  "/[locale]/(auth)/signin/page": "app/[locale]/(auth)/signin/page.js"
 }

@@ -1,7 +1,12 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { locales } from '@/lib/i18n';
+import { Inter } from 'next/font/google';
+import { locales, type Locale } from '@/lib/i18n';
+import { Providers } from '@/components/providers/Providers';
+import '@/app/globals.css';
+
+const inter = Inter({ subsets: ['latin'] });
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
@@ -13,20 +18,22 @@ export default async function LocaleLayout({
   params,
 }: LocaleLayoutProps): Promise<JSX.Element> {
   const { locale } = await params;
+  
   // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale as any)) {
+  if (!locales.includes(locale as Locale)) {
     notFound();
   }
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
+  // Providing all messages to the client side
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body>
+    <html lang={locale} suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <Providers locale={locale as Locale}>
+            {children}
+          </Providers>
         </NextIntlClientProvider>
       </body>
     </html>

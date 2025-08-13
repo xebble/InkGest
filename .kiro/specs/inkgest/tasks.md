@@ -31,7 +31,12 @@
   - **CRÍTICO**: Validar que todos los tipos de NextAuth estén correctamente tipados
   - _Requisitos: 1, 12_
 
-- [ ] 3. Internacionalización y temas
+- [x] 3. Internacionalización y temas
+
+
+
+
+
   - Configurar next-intl para español, català e inglés con tipos estrictos
   - Implementar sistema de temas con modo claro/oscuro usando Tailwind CSS
   - Crear componentes de layout base con soporte multi-idioma
