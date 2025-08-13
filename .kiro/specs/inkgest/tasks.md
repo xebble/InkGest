@@ -85,7 +85,6 @@
 
 - [x] 6. Gestión de artistas y personal
 
-
 - [x] 6.1 Módulo de gestión de artistas
   - Crear formularios para registro de artistas con especialidades
   - Implementar gestión de horarios y disponibilidad
@@ -102,7 +101,12 @@
   - _Requisitos: 8, 9_
 
 - [ ] 7. Sistema de citas y calendario
-- [ ] 7.1 Componente de calendario visual
+
+- [x] 7.1 Componente de calendario visual
+
+
+
+
   - Crear vista de calendario drag-and-drop con tipos estrictos
   - Implementar filtros por artista, servicio y estado
   - Desarrollar creación rápida de citas con validación
@@ -112,12 +116,12 @@
   - **CRÍTICO**: Verificar que no existan errores de TypeScript (`tsc --noEmit`) antes de continuar
   - _Requisitos: 3_
 
-- [ ] 7.2 Integración con Google Calendar
-  - Implementar sincronización bidireccional con Google Calendar API
+- [ ] 7.2 Integración con Google Calendar, Microsoft y Apple
+  - Implementar sincronización bidireccional con Google Calendar API, Microsoft Calendar y Apple
   - Crear servicio de gestión de eventos con manejo de errores
   - Desarrollar detección y resolución de conflictos de horarios
   - Implementar actualización automática de cambios
-  - Escribir tests de integración para Google Calendar
+  - Escribir tests de integración para Google Calendar, Microsoft y Apple
   - _Requisitos: 3, 5_
 
 - [ ] 7.3 Sistema de recordatorios automáticos

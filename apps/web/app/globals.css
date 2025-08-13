@@ -57,3 +57,196 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* React Big Calendar Styles */
+.rbc-calendar {
+  @apply bg-white rounded-lg;
+}
+
+.rbc-header {
+  @apply bg-gray-50 text-gray-700 font-medium py-2 px-3 border-b border-gray-200;
+}
+
+.rbc-month-view {
+  @apply border border-gray-200 rounded-lg overflow-hidden;
+}
+
+.rbc-date-cell {
+  @apply text-gray-600 text-sm;
+}
+
+.rbc-date-cell.rbc-off-range {
+  @apply text-gray-400;
+}
+
+.rbc-date-cell.rbc-now {
+  @apply bg-blue-50 text-blue-700 font-semibold;
+}
+
+.rbc-event {
+  @apply text-white text-xs rounded px-1 py-0.5 cursor-pointer;
+}
+
+.rbc-event:hover {
+  @apply opacity-90;
+}
+
+.rbc-event.rbc-selected {
+  @apply ring-2 ring-white ring-opacity-50;
+}
+
+.rbc-time-view {
+  @apply border border-gray-200 rounded-lg overflow-hidden;
+}
+
+.rbc-time-header {
+  @apply border-b border-gray-200;
+}
+
+.rbc-time-content {
+  @apply bg-white;
+}
+
+.rbc-timeslot-group {
+  @apply border-b border-gray-100;
+}
+
+.rbc-time-slot {
+  @apply border-r border-gray-100;
+}
+
+.rbc-current-time-indicator {
+  @apply bg-red-500;
+}
+
+.rbc-today {
+  @apply bg-blue-50;
+}
+
+.rbc-toolbar {
+  @apply mb-4 flex items-center justify-between;
+}
+
+.rbc-btn-group {
+  @apply flex space-x-1;
+}
+
+.rbc-btn-group button {
+  @apply px-3 py-1 text-sm border border-gray-300 bg-white hover:bg-gray-50 text-gray-700;
+}
+
+.rbc-btn-group button:first-child {
+  @apply rounded-l;
+}
+
+.rbc-btn-group button:last-child {
+  @apply rounded-r;
+}
+
+.rbc-btn-group button.rbc-active {
+  @apply bg-blue-600 text-white border-blue-600;
+}
+
+.rbc-toolbar-label {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.rbc-agenda-view {
+  @apply border border-gray-200 rounded-lg overflow-hidden;
+}
+
+.rbc-agenda-view table {
+  @apply w-full;
+}
+
+.rbc-agenda-view .rbc-agenda-date-cell {
+  @apply bg-gray-50 font-medium text-gray-700 p-3 border-b border-gray-200;
+}
+
+.rbc-agenda-view .rbc-agenda-time-cell {
+  @apply text-gray-600 p-3 border-b border-gray-200;
+}
+
+.rbc-agenda-view .rbc-agenda-event-cell {
+  @apply p-3 border-b border-gray-200;
+}
+
+.rbc-show-more {
+  @apply text-blue-600 hover:text-blue-700 cursor-pointer text-xs;
+}
+
+.rbc-overlay {
+  @apply bg-white border border-gray-200 rounded-lg shadow-lg p-2;
+}
+
+.rbc-overlay-header {
+  @apply font-medium text-gray-900 mb-2;
+}
+
+/* Drag and Drop Styles */
+.rbc-addons-dnd .rbc-addons-dnd-row-body {
+  @apply relative;
+}
+
+.rbc-addons-dnd .rbc-addons-dnd-drag-preview {
+  @apply opacity-50;
+}
+
+.rbc-addons-dnd .rbc-addons-dnd-over {
+  @apply bg-blue-50;
+}
+
+.rbc-addons-dnd .rbc-addons-dnd-drag-row {
+  @apply cursor-move;
+}
+
+.rbc-addons-dnd .rbc-event {
+  @apply cursor-move;
+}
+
+.rbc-addons-dnd .rbc-event:hover {
+  @apply opacity-80;
+}
+
+/* Resize handles */
+.rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor {
+  @apply cursor-ns-resize;
+}
+
+.rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor {
+  @apply cursor-ew-resize;
+}
+
+/* Drop zones */
+.rbc-addons-dnd .rbc-day-slot {
+  @apply transition-colors duration-200;
+}
+
+.rbc-addons-dnd .rbc-day-slot.rbc-addons-dnd-over {
+  @apply bg-blue-50 border-blue-200;
+}
+
+/* Custom appointment status colors */
+.appointment-scheduled {
+  @apply bg-blue-500;
+}
+
+.appointment-confirmed {
+  @apply bg-green-500;
+}
+
+.appointment-in-progress {
+  @apply bg-yellow-500;
+}
+
+.appointment-completed {
+  @apply bg-gray-500;
+}
+
+.appointment-cancelled {
+  @apply bg-red-500;
+}
+
+.appointment-no-show {
+  @apply bg-purple-500;
+}
