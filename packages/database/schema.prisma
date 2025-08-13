@@ -25,13 +25,13 @@ model Company {
 }
 
 model Store {
-  id              String        @id @default(cuid())
+  id              String          @id @default(cuid())
   companyId       String
   name            String
-  configuration   String        @default("{}")
-  timezone        String        @default("Europe/Madrid")
+  configuration   String          @default("{}")
+  timezone        String          @default("Europe/Madrid")
   businessHours   String
-  company         Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company         Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
   appointments    Appointment[]
   clients         Client[]
   artists         Artist[]
@@ -39,6 +39,10 @@ model Store {
   products        Product[]
   rooms           Room[]
   sales           Sale[]
+  cashRegisters   CashRegister[]
+  inventory       Inventory[]
+  suppliers       Supplier[]
+  purchaseOrders  PurchaseOrder[]
 
   @@map("stores")
 }
@@ -100,7 +104,7 @@ model Artist {
 }
 
 model Appointment {
-  id            String    @id @default(cuid())
+  id            String            @id @default(cuid())
   storeId       String
   clientId      String
   artistId      String
@@ -108,56 +112,58 @@ model Appointment {
   roomId        String?
   startTime     DateTime
   endTime       DateTime
-  status        String    @default("SCHEDULED")
+  status        String            @default("SCHEDULED")
   notes         String?
   price         Float
   deposit       Float?
   googleEventId String?
-  store         Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  client        Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  artist        Artist    @relation(fields: [artistId], references: [id], onDelete: Cascade)
-  service       Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-  room          Room?     @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  store         Store             @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  client        Client            @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  artist        Artist            @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  service       Service           @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  room          Room?             @relation(fields: [roomId], references: [id], onDelete: SetNull)
   payments      Payment[]
   documents     Document[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
 
   @@map("appointments")
 }
 
 model Service {
-  id              String        @id @default(cuid())
+  id              String          @id @default(cuid())
   storeId         String
   name            String
   description     String?
-  duration        Int           // Duration in minutes
+  duration        Int             // Duration in minutes
   price           Float
   category        String
-  requiresConsent Boolean       @default(true)
-  store           Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  requiresConsent Boolean         @default(true)
+  store           Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
   appointments    Appointment[]
   saleItems       SaleItem[]
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 
   @@map("services")
 }
 
 model Product {
-  id          String     @id @default(cuid())
-  storeId     String
-  name        String
-  description String?
-  price       Float
-  stock       Int        @default(0)
-  minStock    Int        @default(5)
-  batch       String?
-  expiryDate  DateTime?
-  store       Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  saleItems   SaleItem[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id               String              @id @default(cuid())
+  storeId          String
+  name             String
+  description      String?
+  price            Float
+  stock            Int                 @default(0)
+  minStock         Int                 @default(5)
+  batch            String?
+  expiryDate       DateTime?
+  store            Store               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  saleItems        SaleItem[]
+  inventory        Inventory[]
+  purchaseOrderItems PurchaseOrderItem[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
 
   @@map("products")
 }
@@ -210,19 +216,19 @@ model SaleItem {
 }
 
 model Payment {
-  id              String       @id @default(cuid())
+  id              String        @id @default(cuid())
   appointmentId   String?
   saleId          String?
   amount          Float
   method          String
-  status          String       @default("PENDING")
+  status          String        @default("PENDING")
   transactionId   String?
-  installmentPlan String?      // Installment plan if applicable (JSON string)
-  cryptoDetails   String?      // Crypto payment details (JSON string)
-  appointment     Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
-  sale            Sale?        @relation(fields: [saleId], references: [id], onDelete: SetNull)
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  installmentPlan String?       // Installment plan if applicable (JSON string)
+  cryptoDetails   String?       // Crypto payment details (JSON string)
+  appointment     Appointment?  @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  sale            Sale?         @relation(fields: [saleId], references: [id], onDelete: SetNull)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   @@map("payments")
 }
@@ -246,5 +252,153 @@ model Document {
   @@map("documents")
 }
 
-// Enums are handled as string constants in the application layer
+model CashRegister {
+  id           String              @id @default(cuid())
+  storeId      String
+  userId       String
+  openingTime  DateTime
+  closingTime  DateTime?
+  openingCash  Float
+  closingCash  Float?
+  totalSales   Float               @default(0)
+  differences  String              @default("{}") // JSON object with differences by payment method
+  notes        String?
+  status       String              @default("OPEN")
+  store        Store               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  movements    CashMovement[]
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  @@map("cash_registers")
+}
+
+model CashMovement {
+  id             String      @id @default(cuid())
+  cashRegisterId String
+  type           String      // 'sale', 'expense', 'adjustment'
+  amount         Float
+  paymentMethod  String
+  description    String?
+  reference      String?     // Reference to sale, payment, etc.
+  cashRegister   CashRegister @relation(fields: [cashRegisterId], references: [id], onDelete: Cascade)
+  createdAt      DateTime    @default(now())
+
+  @@map("cash_movements")
+}
+
+model Inventory {
+  id          String    @id @default(cuid())
+  storeId     String
+  productId   String
+  quantity    Int
+  minStock    Int       @default(5)
+  maxStock    Int?
+  location    String?
+  lastUpdated DateTime  @default(now())
+  store       Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  movements   InventoryMovement[]
+
+  @@unique([storeId, productId])
+  @@map("inventory")
+}
+
+model InventoryMovement {
+  id          String    @id @default(cuid())
+  inventoryId String
+  type        String    // 'in', 'out', 'adjustment'
+  quantity    Int
+  reason      String?
+  reference   String?   // Reference to sale, purchase, etc.
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+
+  @@map("inventory_movements")
+}
+
+model Supplier {
+  id          String    @id @default(cuid())
+  storeId     String
+  name        String
+  email       String?
+  phone       String?
+  address     String?
+  taxId       String?
+  store       Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  orders      PurchaseOrder[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("suppliers")
+}
+
+model PurchaseOrder {
+  id         String              @id @default(cuid())
+  storeId    String
+  supplierId String
+  orderDate  DateTime
+  status     String              @default("PENDING")
+  total      Float
+  notes      String?
+  store      Store               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  supplier   Supplier            @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  items      PurchaseOrderItem[]
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderItem {
+  id              String        @id @default(cuid())
+  purchaseOrderId String
+  productId       String
+  quantity        Int
+  unitPrice       Float
+  totalPrice      Float
+  received        Int           @default(0)
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  product         Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("purchase_order_items")
+}
+
+model Notification {
+  id        String            @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  data      String            @default("{}") // JSON data
+  read      Boolean           @default(false)
+  createdAt DateTime          @default(now())
+
+  @@map("notifications")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String
+  changes   String   // JSON object with changes
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@map("audit_logs")
+}
+
+// Enum values are handled as string constants in the application layer
 // since SQLite doesn't support native enums
+
+// Role: "ADMIN" | "MANAGER" | "ARTIST" | "EMPLOYEE"
+// AppointmentStatus: "SCHEDULED" | "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "NO_SHOW"
+// PaymentMethod: "CASH" | "BIZUM" | "PAYPAL" | "STRIPE" | "CRYPTO"
+// PaymentStatus: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED"
+// ServiceCategory: "TATTOO" | "PIERCING" | "LASER" | "MICROBLADING" | "OTHER"
+// DocumentType: "CONSENT" | "INVOICE" | "RECEIPT" | "CONTRACT"
+// CashRegisterStatus: "OPEN" | "CLOSED"
+// PurchaseOrderStatus: "PENDING" | "ORDERED" | "RECEIVED" | "CANCELLED"
+// NotificationType: "APPOINTMENT_REMINDER" | "PAYMENT_DUE" | "STOCK_LOW" | "SYSTEM_ALERT" | "BIRTHDAY" | "INSPECTION_DUE"

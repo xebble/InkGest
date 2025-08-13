@@ -21,7 +21,6 @@
   - _Requisitos: 1, 2_
 
 - [x] 2. Sistema de autenticación y autorización multi-tenant
-
   - Implementar NextAuth.js con soporte multi-empresa y roles de usuario
   - Crear middleware de autorización con permisos tipados por rol
   - Desarrollar sistema de gestión de empresas y tiendas con aislamiento de datos
@@ -32,11 +31,6 @@
   - _Requisitos: 1, 12_
 
 - [x] 3. Internacionalización y temas
-
-
-
-
-
   - Configurar next-intl para español, català e inglés con tipos estrictos
   - Implementar sistema de temas con modo claro/oscuro usando Tailwind CSS
   - Crear componentes de layout base con soporte multi-idioma
@@ -46,8 +40,10 @@
   - **CRÍTICO**: Validar que los tipos de tema ('light' | 'dark') estén definidos estrictamente
   - _Requisitos: 2, 18_
 
-- [ ] 4. Modelos de datos y servicios base
-- [ ] 4.1 Implementar esquemas Prisma completos
+- [x] 4. Modelos de datos y servicios base
+
+
+- [x] 4.1 Implementar esquemas Prisma completos
   - Crear todos los modelos de base de datos (Company, Store, User, Client, Artist, etc.)
   - Configurar relaciones y constraints con tipos generados automáticamente
   - Implementar migraciones y seeders para datos de prueba
@@ -55,7 +51,7 @@
   - **CRÍTICO**: Verificar que no existan errores de TypeScript (`tsc --noEmit`) antes de continuar
   - _Requisitos: 1, 7, 8_
 
-- [ ] 4.2 Desarrollar servicios de acceso a datos
+- [x] 4.2 Desarrollar servicios de acceso a datos
   - Crear servicios tipados para cada entidad con operaciones CRUD
   - Implementar patrón Repository con interfaces tipadas
   - Desarrollar validación con Zod para todos los esquemas de entrada

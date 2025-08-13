@@ -168,6 +168,86 @@ async function main(): Promise<void> {
     ],
   });
 
+  // Create sample supplier
+  await prisma.supplier.create({
+    data: {
+      storeId: store.id,
+      name: 'Suministros Tattoo Pro',
+      email: 'pedidos@tattoopro.es',
+      phone: '+34900123456',
+      address: 'Calle Principal 123, Madrid',
+      taxId: 'B12345678',
+    },
+  });
+
+  // Create sample inventory records
+  const product1 = await prisma.product.findFirst({
+    where: { name: 'Crema Cicatrizante' },
+  });
+  
+  const product2 = await prisma.product.findFirst({
+    where: { name: 'Jabón Antibacterial' },
+  });
+
+  if (product1) {
+    await prisma.inventory.create({
+      data: {
+        storeId: store.id,
+        productId: product1.id,
+        quantity: 25,
+        minStock: 5,
+        maxStock: 50,
+        location: 'Almacén A1',
+      },
+    });
+  }
+
+  if (product2) {
+    await prisma.inventory.create({
+      data: {
+        storeId: store.id,
+        productId: product2.id,
+        quantity: 40,
+        minStock: 10,
+        maxStock: 80,
+        location: 'Almacén A2',
+      },
+    });
+  }
+
+  // Create sample cash register
+  await prisma.cashRegister.create({
+    data: {
+      storeId: store.id,
+      userId: adminUser.id,
+      openingTime: new Date(),
+      openingCash: 100.0,
+      totalSales: 0,
+      differences: JSON.stringify({}),
+      status: 'OPEN',
+    },
+  });
+
+  // Create sample notifications
+  await prisma.notification.createMany({
+    data: [
+      {
+        userId: adminUser.id,
+        type: 'STOCK_LOW',
+        title: 'Stock Bajo',
+        message: 'El producto "Crema Cicatrizante" está por debajo del stock mínimo',
+        data: JSON.stringify({ productId: product1?.id, currentStock: 3 }),
+      },
+      {
+        userId: artistUser.id,
+        type: 'APPOINTMENT_REMINDER',
+        title: 'Recordatorio de Cita',
+        message: 'Tienes una cita programada para mañana a las 10:00',
+        data: JSON.stringify({ appointmentId: 'demo-appointment' }),
+      },
+    ],
+  });
+
   console.log('✅ Seed data created successfully');
   console.log(`Company: ${company.name} (${company.id})`);
   console.log(`Store: ${store.name} (${store.id})`);
