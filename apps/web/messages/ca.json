@@ -30,10 +30,14 @@
     "settings": "Configuració"
   },
   "auth": {
+    "subtitle": "Sistema de Gestió Integral per a Centres de Tatuatge",
     "signIn": "Iniciar Sessió",
     "signOut": "Tancar Sessió",
     "email": "Correu Electrònic",
     "password": "Contrasenya",
+    "signingIn": "Iniciant sessió...",
+    "invalidCredentials": "Credencials invàlides",
+    "loginError": "Error en iniciar sessió. Torna-ho a provar.",
     "forgotPassword": "Has oblidat la contrasenya?",
     "rememberMe": "Recordar-me"
   },

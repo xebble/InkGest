@@ -30,10 +30,14 @@
     "settings": "Settings"
   },
   "auth": {
+    "subtitle": "Comprehensive Management System for Tattoo Centers",
     "signIn": "Sign In",
     "signOut": "Sign Out",
     "email": "Email",
     "password": "Password",
+    "signingIn": "Signing in...",
+    "invalidCredentials": "Invalid credentials",
+    "loginError": "Login error. Please try again.",
     "forgotPassword": "Forgot your password?",
     "rememberMe": "Remember me"
   },

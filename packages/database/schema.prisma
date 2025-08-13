@@ -47,6 +47,7 @@ model User {
   id          String   @id @default(cuid())
   email       String   @unique
   name        String
+  password    String?  // Hashed password for credentials login
   role        String   @default("EMPLOYEE")
   companyId   String
   storeIds    String   @default("[]") // JSON array of store IDs

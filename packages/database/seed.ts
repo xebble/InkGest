@@ -1,4 +1,5 @@
 import { PrismaClient } from './generated/client';
+import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -38,11 +39,15 @@ async function main(): Promise<void> {
     },
   });
 
-  // Create sample users
+  // Create sample users with hashed passwords
+  const adminPassword = await hash('admin123', 12);
+  const artistPassword = await hash('artist123', 12);
+
   const adminUser = await prisma.user.create({
     data: {
-      email: 'admin@inkgest.com',
+      email: 'admin@inkgest.demo',
       name: 'Administrador',
+      password: adminPassword,
       role: 'ADMIN',
       companyId: company.id,
       storeIds: JSON.stringify([store.id]),
@@ -55,8 +60,9 @@ async function main(): Promise<void> {
 
   const artistUser = await prisma.user.create({
     data: {
-      email: 'artist@inkgest.com',
+      email: 'artist@inkgest.demo',
       name: 'Artista Principal',
+      password: artistPassword,
       role: 'ARTIST',
       companyId: company.id,
       storeIds: JSON.stringify([store.id]),
@@ -165,8 +171,9 @@ async function main(): Promise<void> {
   console.log('✅ Seed data created successfully');
   console.log(`Company: ${company.name} (${company.id})`);
   console.log(`Store: ${store.name} (${store.id})`);
-  console.log(`Admin User: ${adminUser.email}`);
-  console.log(`Artist: ${artistUser.email}`);
+  console.log('\n📋 Demo Credentials:');
+  console.log(`Admin: ${adminUser.email} / admin123`);
+  console.log(`Artist: ${artistUser.email} / artist123`);
 }
 
 main()

@@ -30,10 +30,14 @@
     "settings": "Configuración"
   },
   "auth": {
+    "subtitle": "Sistema de Gestión Integral para Centros de Tatuaje",
     "signIn": "Iniciar Sesión",
     "signOut": "Cerrar Sesión",
     "email": "Correo Electrónico",
     "password": "Contraseña",
+    "signingIn": "Iniciando sesión...",
+    "invalidCredentials": "Credenciales inválidas",
+    "loginError": "Error al iniciar sesión. Inténtalo de nuevo.",
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "rememberMe": "Recordarme"
   },
