@@ -1,10 +1,10 @@
 import { withAuth } from 'next-auth/middleware';
 import createIntlMiddleware from 'next-intl/middleware';
-import { locales } from './lib/i18n';
+import { locales, defaultLocale } from './i18n/config';
 
 const intlMiddleware = createIntlMiddleware({
   locales,
-  defaultLocale: 'es',
+  defaultLocale,
   localePrefix: 'always',
 });
 

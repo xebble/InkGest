@@ -35,26 +35,26 @@ declare namespace __next_route_internal_types__ {
     | `/api/automation/jobs`
     | `/api/automation/stats`
     | `/api/communications/email`
-    | `/api/communications/schedule-post-care-followups`
-    | `/api/communications/stats`
     | `/api/communications/schedule-birthday-greetings`
-    | `/api/communications/whatsapp`
+    | `/api/communications/stats`
+    | `/api/communications/schedule-post-care-followups`
     | `/api/communications/templates`
+    | `/api/communications/whatsapp`
     | `/api/companies`
     | `/api/stores`
   type DynamicRoutes<T extends string = string> = 
     | `/${SafeSlug<T>}`
     | `/${SafeSlug<T>}/signin`
+    | `/${SafeSlug<T>}/appointments`
     | `/${SafeSlug<T>}/dashboard`
     | `/${SafeSlug<T>}/dashboard/artists`
-    | `/${SafeSlug<T>}/appointments`
     | `/api/artists/${SafeSlug<T>}`
-    | `/api/artists/${SafeSlug<T>}/commission`
     | `/api/artists/${SafeSlug<T>}/notifications`
+    | `/api/artists/${SafeSlug<T>}/commission`
     | `/api/artists/${SafeSlug<T>}/performance`
     | `/api/auth/${CatchAllSlug<T>}`
-    | `/api/clients/${SafeSlug<T>}/communication-preferences`
     | `/api/automation/jobs/${SafeSlug<T>}`
+    | `/api/clients/${SafeSlug<T>}/communication-preferences`
     | `/api/companies/${SafeSlug<T>}`
     | `/api/stores/${SafeSlug<T>}`
 
