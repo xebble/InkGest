@@ -83,15 +83,17 @@
   - **CRÍTICO**: Verificar que no existan errores de TypeScript (`tsc --noEmit`) antes de continuar
   - _Requisitos: 7_
 
-- [ ] 6. Gestión de artistas y personal
-- [ ] 6.1 Módulo de gestión de artistas
+- [x] 6. Gestión de artistas y personal
+
+
+- [x] 6.1 Módulo de gestión de artistas
   - Crear formularios para registro de artistas con especialidades
   - Implementar gestión de horarios y disponibilidad
   - Desarrollar sistema de ausencias y permisos
   - Crear componente de perfil de artista con documentación
   - _Requisitos: 8_
 
-- [ ] 6.2 Sistema de liquidaciones y reportes de personal
+- [x] 6.2 Sistema de liquidaciones y reportes de personal
   - Implementar cálculo automático de comisiones por artista
   - Crear reportes de rendimiento y productividad
   - Desarrollar sistema de comunicaciones internas

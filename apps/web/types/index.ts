@@ -281,3 +281,209 @@ export interface CommunicationPreferences {
   preferredLanguage: Locale;
   preferredChannel: 'whatsapp' | 'email' | 'sms';
 }
+
+// Artist management types
+export interface CreateArtistData {
+  storeId: string;
+  userId: string;
+  specialties: string[];
+  schedule: ArtistSchedule;
+  commission: number;
+  googleCalendarId?: string;
+}
+
+export interface UpdateArtistData extends Partial<CreateArtistData> {
+  id: string;
+}
+
+export interface ArtistSchedule {
+  monday: DaySchedule;
+  tuesday: DaySchedule;
+  wednesday: DaySchedule;
+  thursday: DaySchedule;
+  friday: DaySchedule;
+  saturday: DaySchedule;
+  sunday: DaySchedule;
+}
+
+export interface DaySchedule {
+  isWorking: boolean;
+  startTime?: string; // Format: "HH:mm"
+  endTime?: string;   // Format: "HH:mm"
+  breaks?: TimeSlot[];
+}
+
+export interface TimeSlot {
+  startTime: string;
+  endTime: string;
+}
+
+export interface ArtistAvailability {
+  artistId: string;
+  date: Date;
+  availableSlots: TimeSlot[];
+  bookedSlots: TimeSlot[];
+}
+
+export interface ArtistAbsence {
+  id: string;
+  artistId: string;
+  startDate: Date;
+  endDate: Date;
+  type: 'vacation' | 'sick' | 'personal' | 'training';
+  reason?: string;
+  approved: boolean;
+  approvedBy?: string;
+  approvedAt?: Date;
+}
+
+export interface CreateAbsenceData {
+  artistId: string;
+  startDate: Date;
+  endDate: Date;
+  type: 'vacation' | 'sick' | 'personal' | 'training';
+  reason?: string;
+}
+
+export interface ArtistWithUser {
+  id: string;
+  storeId: string;
+  userId: string;
+  specialties: string[];
+  schedule: ArtistSchedule;
+  commission: number;
+  googleCalendarId?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+    companyId: string;
+    storeIds: string;
+    preferences: string;
+    password: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  store?: {
+    id: string;
+    companyId: string;
+    name: string;
+    configuration: string;
+    timezone: string;
+    businessHours: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+}
+
+// Commission and reporting types
+export interface CommissionCalculation {
+  artistId: string;
+  period: {
+    startDate: Date;
+    endDate: Date;
+  };
+  totalRevenue: number;
+  commissionRate: number;
+  commissionAmount: number;
+  appointmentCount: number;
+  averageServicePrice: number;
+  breakdown: CommissionBreakdown[];
+}
+
+export interface CommissionBreakdown {
+  appointmentId: string;
+  clientName: string;
+  serviceName: string;
+  appointmentDate: Date;
+  servicePrice: number;
+  commissionRate: number;
+  commissionAmount: number;
+}
+
+export interface ArtistPerformanceReport {
+  artistId: string;
+  artistName: string;
+  period: {
+    startDate: Date;
+    endDate: Date;
+  };
+  metrics: {
+    totalAppointments: number;
+    completedAppointments: number;
+    cancelledAppointments: number;
+    noShowAppointments: number;
+    totalRevenue: number;
+    averageServicePrice: number;
+    commissionEarned: number;
+    clientRetentionRate: number;
+    averageRating?: number;
+  };
+  topServices: ServicePerformance[];
+  monthlyTrends: MonthlyTrend[];
+}
+
+export interface ServicePerformance {
+  serviceId: string;
+  serviceName: string;
+  appointmentCount: number;
+  totalRevenue: number;
+  averagePrice: number;
+}
+
+export interface MonthlyTrend {
+  month: string;
+  appointmentCount: number;
+  revenue: number;
+  commission: number;
+}
+
+export interface StorePerformanceReport {
+  storeId: string;
+  storeName: string;
+  period: {
+    startDate: Date;
+    endDate: Date;
+  };
+  metrics: {
+    totalRevenue: number;
+    totalAppointments: number;
+    averageAppointmentValue: number;
+    totalCommissionsPaid: number;
+    activeArtists: number;
+    clientRetentionRate: number;
+  };
+  artistPerformance: ArtistPerformanceSummary[];
+  topServices: ServicePerformance[];
+}
+
+export interface ArtistPerformanceSummary {
+  artistId: string;
+  artistName: string;
+  appointmentCount: number;
+  revenue: number;
+  commission: number;
+  commissionRate: number;
+}
+
+export interface ArtistNotification {
+  id: string;
+  artistId: string;
+  type: 'commission_ready' | 'performance_report' | 'schedule_reminder' | 'absence_approved' | 'absence_rejected';
+  title: string;
+  message: string;
+  data?: Record<string, any>;
+  read: boolean;
+  createdAt: Date;
+}
+
+export interface CreateNotificationData {
+  artistId: string;
+  type: ArtistNotification['type'];
+  title: string;
+  message: string;
+  data?: Record<string, any>;
+}
