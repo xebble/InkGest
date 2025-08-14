@@ -24,6 +24,9 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   // Handle escape key
   useEffect(() => {
+    // ✅ Only run on client side
+    if (typeof window === 'undefined') return;
+
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -32,13 +35,19 @@ const Modal: React.FC<ModalProps> = ({
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
+      // ✅ Safe body style manipulation
+      const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
+
+      return () => {
+        document.removeEventListener('keydown', handleEscape);
+        // ✅ Restore original overflow instead of hardcoding 'unset'
+        document.body.style.overflow = originalOverflow;
+      };
     }
 
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
-    };
+    // Return undefined when not setting up listeners
+    return undefined;
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;

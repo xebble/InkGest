@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Calendar, dateFnsLocalizer, View } from 'react-big-calendar';
 import withDragAndDrop, {
   EventInteractionArgs,
 } from 'react-big-calendar/lib/addons/dragAndDrop';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { es, ca, enUS } from 'date-fns/locale';
-import { DragDropContext } from '@hello-pangea/dnd';
+// Removed DragDropContext import - using react-big-calendar's drag-and-drop instead
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 
@@ -56,6 +56,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 }) => {
   const t = useTranslations('appointments');
   const locale = useLocale() as 'es' | 'ca' | 'en';
+
+  // ✅ Prevent hydration issues with calendar libraries
+  const [mounted, setMounted] = useState<boolean>(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // State management
   const [selectedAppointment, setSelectedAppointment] =
@@ -400,12 +407,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     [onAppointmentUpdate, validateDragDrop]
   );
 
-  // Drag and drop handlers for @hello-pangea/dnd (for custom drag operations)
-  const handleDragEnd = useCallback((_result: any) => {
-    // This can be used for custom drag operations like moving between artists
-    // For now, we rely on react-big-calendar's built-in drag and drop
-    console.log('Custom drag ended');
-  }, []);
+  // Note: Using react-big-calendar's built-in drag-and-drop instead of @hello-pangea/dnd
+  // to avoid DOM manipulation conflicts
 
   // View change handler
   const handleViewChange = useCallback(
@@ -467,8 +470,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   }
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="space-y-4">
+    <div className="space-y-4">
         {/* Filters */}
         <AppointmentFilters
           filters={filters}
@@ -516,8 +518,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({
             <div className="flex items-center justify-center h-96">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
             </div>
+          ) : !mounted ? (
+            <div className="flex items-center justify-center h-96">
+              <div className="text-gray-500">Cargando calendario...</div>
+            </div>
           ) : (
-            <div style={{ height: '600px' }}>
+            <div style={{ height: '600px' }} suppressHydrationWarning>
               <DnDCalendar
                 localizer={localizer}
                 events={calendarEvents}
@@ -588,8 +594,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           defaultArtist={filters.artistIds[0]}
           defaultRoom={filters.roomIds[0]}
         />
-      </div>
-    </DragDropContext>
+    </div>
   );
 };
 

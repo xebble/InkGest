@@ -36,10 +36,10 @@ declare namespace __next_route_internal_types__ {
     | `/api/automation/stats`
     | `/api/communications/email`
     | `/api/communications/schedule-birthday-greetings`
-    | `/api/communications/stats`
     | `/api/communications/schedule-post-care-followups`
-    | `/api/communications/templates`
+    | `/api/communications/stats`
     | `/api/communications/whatsapp`
+    | `/api/communications/templates`
     | `/api/companies`
     | `/api/stores`
   type DynamicRoutes<T extends string = string> = 
@@ -50,11 +50,11 @@ declare namespace __next_route_internal_types__ {
     | `/${SafeSlug<T>}/dashboard/artists`
     | `/api/artists/${SafeSlug<T>}`
     | `/api/artists/${SafeSlug<T>}/notifications`
-    | `/api/artists/${SafeSlug<T>}/commission`
     | `/api/artists/${SafeSlug<T>}/performance`
+    | `/api/artists/${SafeSlug<T>}/commission`
     | `/api/auth/${CatchAllSlug<T>}`
-    | `/api/automation/jobs/${SafeSlug<T>}`
     | `/api/clients/${SafeSlug<T>}/communication-preferences`
+    | `/api/automation/jobs/${SafeSlug<T>}`
     | `/api/companies/${SafeSlug<T>}`
     | `/api/stores/${SafeSlug<T>}`
 

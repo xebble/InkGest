@@ -44,27 +44,8 @@ export interface CalendarEvent extends Event {
   price: number;
 }
 
-// Drag and drop types
-export interface DragResult {
-  draggableId: string;
-  type: string;
-  source: {
-    droppableId: string;
-    index: number;
-  };
-  destination?: {
-    droppableId: string;
-    index: number;
-  } | null;
-  reason: 'DROP' | 'CANCEL';
-}
-
-export interface DropResult extends DragResult {
-  destination: {
-    droppableId: string;
-    index: number;
-  };
-}
+// Note: Drag and drop types removed - using react-big-calendar's built-in drag-and-drop
+// instead of @hello-pangea/dnd to avoid DOM conflicts
 
 // Filter types
 export interface AppointmentFiltersType {
