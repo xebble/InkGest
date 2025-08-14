@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -14,12 +14,19 @@ export default function SignInPage({ params: _ }: SignInPageProps): JSX.Element 
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   
   const router = useRouter();
   const t = useTranslations('auth');
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    if (!isMounted) return; // Prevent submission during hydration
+    
     setIsLoading(true);
     setError('');
 
@@ -46,6 +53,19 @@ export default function SignInPage({ params: _ }: SignInPageProps): JSX.Element 
       setIsLoading(false);
     }
   };
+
+  // Show loading state during hydration
+  if (!isMounted) {
+    return (
+      <div className="mt-8 space-y-6">
+        <div className="rounded-md shadow-sm -space-y-px">
+          <div className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md h-10 bg-gray-100 animate-pulse" />
+          <div className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md h-10 bg-gray-100 animate-pulse" />
+        </div>
+        <div className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-400 h-10" />
+      </div>
+    );
+  }
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

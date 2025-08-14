@@ -18,15 +18,15 @@ export function Providers({ children, locale }: ProvidersProps): JSX.Element {
   return (
     <ProviderErrorBoundary>
       <HydrationMonitor />
-      <SessionProvider>
-        <ClientOnly fallback={<div className="min-h-screen bg-white dark:bg-gray-900" />}>
+      <ClientOnly fallback={<div className="min-h-screen bg-white dark:bg-gray-900" />}>
+        <SessionProvider>
           <ThemeProvider>
             <LocaleProvider locale={locale}>
               {children}
             </LocaleProvider>
           </ThemeProvider>
-        </ClientOnly>
-      </SessionProvider>
+        </SessionProvider>
+      </ClientOnly>
     </ProviderErrorBoundary>
   );
 }

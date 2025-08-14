@@ -29,34 +29,34 @@ declare namespace __next_route_internal_types__ {
     S extends `${string}${SearchOrHash}` ? never : S
 
   type StaticRoutes = 
-    | `/api/artists`
     | `/api/artists/absences`
     | `/api/artists/specialties`
     | `/api/automation/jobs`
+    | `/api/artists`
     | `/api/automation/stats`
-    | `/api/communications/email`
-    | `/api/communications/schedule-birthday-greetings`
     | `/api/communications/schedule-post-care-followups`
+    | `/api/communications/email`
     | `/api/communications/stats`
     | `/api/communications/templates`
     | `/api/communications/whatsapp`
+    | `/api/communications/schedule-birthday-greetings`
     | `/api/companies`
     | `/api/stores`
   type DynamicRoutes<T extends string = string> = 
-    | `/${SafeSlug<T>}`
-    | `/${SafeSlug<T>}/signin`
+    | `/api/artists/${SafeSlug<T>}/commission`
+    | `/api/artists/${SafeSlug<T>}/performance`
+    | `/api/artists/${SafeSlug<T>}`
+    | `/api/artists/${SafeSlug<T>}/notifications`
+    | `/api/automation/jobs/${SafeSlug<T>}`
+    | `/api/auth/${CatchAllSlug<T>}`
+    | `/api/clients/${SafeSlug<T>}/communication-preferences`
+    | `/api/stores/${SafeSlug<T>}`
+    | `/api/companies/${SafeSlug<T>}`
     | `/${SafeSlug<T>}/dashboard`
     | `/${SafeSlug<T>}/dashboard/artists`
+    | `/${SafeSlug<T>}`
     | `/${SafeSlug<T>}/appointments`
-    | `/api/artists/${SafeSlug<T>}`
-    | `/api/artists/${SafeSlug<T>}/commission`
-    | `/api/artists/${SafeSlug<T>}/notifications`
-    | `/api/artists/${SafeSlug<T>}/performance`
-    | `/api/auth/${CatchAllSlug<T>}`
-    | `/api/automation/jobs/${SafeSlug<T>}`
-    | `/api/clients/${SafeSlug<T>}/communication-preferences`
-    | `/api/companies/${SafeSlug<T>}`
-    | `/api/stores/${SafeSlug<T>}`
+    | `/${SafeSlug<T>}/signin`
 
   type RouteImpl<T> = 
     | StaticRoutes
