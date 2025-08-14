@@ -23,7 +23,7 @@ export function withAuth(
   return async (request: NextRequest): Promise<NextResponse> => {
     try {
       const token = await getToken({ 
-        req: request, 
+        req: request as any, 
         secret: process.env.NEXTAUTH_SECRET || 'fallback-secret'
       });
 

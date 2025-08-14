@@ -38,23 +38,23 @@ declare namespace __next_route_internal_types__ {
     | `/api/communications/schedule-birthday-greetings`
     | `/api/communications/schedule-post-care-followups`
     | `/api/communications/stats`
-    | `/api/communications/whatsapp`
     | `/api/communications/templates`
+    | `/api/communications/whatsapp`
     | `/api/companies`
     | `/api/stores`
   type DynamicRoutes<T extends string = string> = 
     | `/${SafeSlug<T>}`
     | `/${SafeSlug<T>}/signin`
-    | `/${SafeSlug<T>}/appointments`
     | `/${SafeSlug<T>}/dashboard`
     | `/${SafeSlug<T>}/dashboard/artists`
+    | `/${SafeSlug<T>}/appointments`
     | `/api/artists/${SafeSlug<T>}`
+    | `/api/artists/${SafeSlug<T>}/commission`
     | `/api/artists/${SafeSlug<T>}/notifications`
     | `/api/artists/${SafeSlug<T>}/performance`
-    | `/api/artists/${SafeSlug<T>}/commission`
     | `/api/auth/${CatchAllSlug<T>}`
-    | `/api/clients/${SafeSlug<T>}/communication-preferences`
     | `/api/automation/jobs/${SafeSlug<T>}`
+    | `/api/clients/${SafeSlug<T>}/communication-preferences`
     | `/api/companies/${SafeSlug<T>}`
     | `/api/stores/${SafeSlug<T>}`
 
@@ -68,8 +68,8 @@ declare namespace __next_route_internal_types__ {
 }
 
 declare module 'next' {
-  export { default } from 'next/types.js'
-  export * from 'next/types.js'
+  export { default } from 'next/types/index.js'
+  export * from 'next/types/index.js'
 
   export type Route<T extends string = string> =
     __next_route_internal_types__.RouteImpl<T>
@@ -125,22 +125,4 @@ declare module 'next/navigation' {
   }
 
   export declare function useRouter(): AppRouterInstance;
-}
-
-declare module 'next/form' {
-  import type { FormProps as OriginalFormProps } from 'next/dist/client/form.js'
-
-  type FormRestProps = Omit<OriginalFormProps, 'action'>
-
-  export type FormProps<RouteInferType> = {
-    /**
-     * `action` can be either a `string` or a function.
-     * - If `action` is a string, it will be interpreted as a path or URL to navigate to when the form is submitted.
-     *   The path will be prefetched when the form becomes visible.
-     * - If `action` is a function, it will be called when the form is submitted. See the [React docs](https://react.dev/reference/react-dom/components/form#props) for more.
-     */
-    action: __next_route_internal_types__.RouteImpl<RouteInferType> | ((formData: FormData) => void)
-  } & FormRestProps
-
-  export default function Form<RouteType>(props: FormProps<RouteType>): JSX.Element
 }

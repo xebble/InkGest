@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Inter } from 'next/font/google';
 import { locales, type Locale } from '@/i18n/config';
 import { Providers } from '@/components/providers/Providers';
+import { ClientOnly } from '@/components/ui/ClientOnly';
 import '@/app/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -35,12 +36,14 @@ export default async function LocaleLayout({
   const messages = await getMessages(locale);
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+    <html lang={locale}>
+      <body className={inter.className}>
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <Providers locale={locale as Locale}>
-            {children}
-          </Providers>
+          <ClientOnly fallback={<div className="min-h-screen bg-background" />}>
+            <Providers locale={locale as Locale}>
+              {children}
+            </Providers>
+          </ClientOnly>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -8,11 +8,22 @@ import {
   ReactNode,
 } from 'react';
 import { Theme } from '../../types';
+import { 
+  safeLocalStorage, 
+  safeClassListOperation, 
+  afterHydration,
+  handleStrictModeError 
+} from '../../lib/utils/hydration';
 
-interface ThemeContextType {
+interface ThemeState {
   theme: Theme;
-  setTheme: (theme: Theme) => void;
   resolvedTheme: 'light' | 'dark';
+  isHydrated: boolean;
+  isLoading: boolean;
+}
+
+interface ThemeContextType extends ThemeState {
+  setTheme: (theme: Theme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -28,107 +39,203 @@ export function ThemeProvider({
   defaultTheme = 'system',
   storageKey = 'inkgest-theme',
 }: ThemeProviderProps): JSX.Element {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme);
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
-  const [mounted, setMounted] = useState<boolean>(false);
+  const [themeState, setThemeState] = useState<ThemeState>({
+    theme: defaultTheme,
+    resolvedTheme: 'light',
+    isHydrated: false,
+    isLoading: true,
+  });
 
-  // ✅ Prevent hydration mismatch - only run on client
+  // Initialize theme after hydration
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    let isMounted = true;
 
-  useEffect(() => {
-    if (!mounted) return;
+    const initializeTheme = async (): Promise<void> => {
+      try {
+        // Load saved theme from localStorage using safe wrapper
+        let savedTheme = defaultTheme;
+        const storage = safeLocalStorage();
+        const stored = storage.getItem(storageKey) as Theme;
+        if (stored && ['light', 'dark', 'system'].includes(stored)) {
+          savedTheme = stored;
+        }
 
-    // ✅ Safe DOM access after mount
-    try {
-      const savedTheme = localStorage.getItem(storageKey) as Theme;
-      if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
-        setThemeState(savedTheme);
+        // Determine resolved theme
+        let effectiveTheme: 'light' | 'dark';
+        if (savedTheme === 'system') {
+          effectiveTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+        } else {
+          effectiveTheme = savedTheme;
+        }
+
+        // Apply theme to DOM safely
+        const root = document.documentElement;
+        
+        // Use afterHydration to ensure safe DOM manipulation
+        afterHydration(() => {
+          if (!isMounted) return;
+          
+          try {
+            // Remove all theme classes first
+            safeClassListOperation(root, 'remove', 'light', 'ThemeProvider');
+            safeClassListOperation(root, 'remove', 'dark', 'ThemeProvider');
+            // Add the new theme class
+            safeClassListOperation(root, 'add', effectiveTheme, 'ThemeProvider');
+          } catch (error) {
+            handleStrictModeError(error as Error, 'ThemeProvider');
+          }
+        });
+
+        // Update state if component is still mounted
+        if (isMounted) {
+          setThemeState({
+            theme: savedTheme,
+            resolvedTheme: effectiveTheme,
+            isHydrated: true,
+            isLoading: false,
+          });
+        }
+      } catch (error) {
+        // Silent error handling in production
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Failed to initialize theme:', error);
+        }
+        if (isMounted) {
+          setThemeState(prev => ({
+            ...prev,
+            isHydrated: true,
+            isLoading: false,
+          }));
+        }
       }
-    } catch (error) {
-      console.warn('Failed to load theme from localStorage:', error);
-    }
-  }, [storageKey, mounted]);
+    };
 
+    // Small delay to ensure hydration is complete
+    const timeoutId = setTimeout(initializeTheme, 0);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
+  }, [defaultTheme, storageKey]);
+
+  // Handle theme changes after hydration
   useEffect(() => {
-    if (!mounted) return;
+    if (!themeState.isHydrated) return;
 
-    // ✅ Safe DOM manipulation after mount
     try {
+      // Save to localStorage using safe wrapper
+      const storage = safeLocalStorage();
+      storage.setItem(storageKey, themeState.theme);
+
+      // Update DOM
       const root = document.documentElement;
-
-      // Remove previous theme classes
-      root.classList.remove('light', 'dark');
-
       let effectiveTheme: 'light' | 'dark';
 
-      if (theme === 'system') {
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-          .matches
+      if (themeState.theme === 'system') {
+        effectiveTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
           ? 'dark'
           : 'light';
-        effectiveTheme = systemTheme;
       } else {
-        effectiveTheme = theme;
+        effectiveTheme = themeState.theme;
       }
 
-      // Apply theme class
-      root.classList.add(effectiveTheme);
-      setResolvedTheme(effectiveTheme);
+      // Use afterHydration for safe DOM manipulation
+      afterHydration(() => {
+        try {
+          safeClassListOperation(root, 'remove', 'light', 'ThemeProvider');
+          safeClassListOperation(root, 'remove', 'dark', 'ThemeProvider');
+          safeClassListOperation(root, 'add', effectiveTheme, 'ThemeProvider');
+        } catch (error) {
+          handleStrictModeError(error as Error, 'ThemeProvider');
+        }
+      });
 
-      // Save to localStorage
-      localStorage.setItem(storageKey, theme);
+      // Update resolved theme if it changed
+      if (effectiveTheme !== themeState.resolvedTheme) {
+        setThemeState(prev => ({
+          ...prev,
+          resolvedTheme: effectiveTheme,
+          isLoading: false,
+        }));
+      } else {
+        // Mark as not loading even if theme didn't change
+        setThemeState(prev => ({
+          ...prev,
+          isLoading: false,
+        }));
+      }
     } catch (error) {
-      console.warn('Failed to apply theme:', error);
+      // Silent error handling in production
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Failed to handle theme change:', error);
+      }
+      // Ensure loading state is cleared even on error
+      setThemeState(prev => ({
+        ...prev,
+        isLoading: false,
+      }));
     }
-  }, [theme, storageKey, mounted]);
+  }, [themeState.theme, themeState.isHydrated, themeState.resolvedTheme, storageKey]);
 
+  // Handle system theme changes
   useEffect(() => {
-    if (!mounted || theme !== 'system') return;
+    if (!themeState.isHydrated || themeState.theme !== 'system') return;
 
-    // ✅ Safe media query listener after mount
     try {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-      const handleChange = (e: MediaQueryListEvent): void => {
+      const handleSystemThemeChange = (e: MediaQueryListEvent): void => {
         const systemTheme = e.matches ? 'dark' : 'light';
-        setResolvedTheme(systemTheme);
+        
+        // Use afterHydration for safe DOM manipulation
+        afterHydration(() => {
+          try {
+            const root = document.documentElement;
+            safeClassListOperation(root, 'remove', 'light', 'ThemeProvider');
+            safeClassListOperation(root, 'remove', 'dark', 'ThemeProvider');
+            safeClassListOperation(root, 'add', systemTheme, 'ThemeProvider');
+          } catch (error) {
+            handleStrictModeError(error as Error, 'ThemeProvider');
+          }
+        });
 
-        const root = document.documentElement;
-        root.classList.remove('light', 'dark');
-        root.classList.add(systemTheme);
+        setThemeState(prev => ({
+          ...prev,
+          resolvedTheme: systemTheme,
+        }));
       };
 
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.addEventListener('change', handleSystemThemeChange);
+      return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
     } catch (error) {
-      console.warn('Failed to setup media query listener:', error);
+      // Silent error handling in production
+      if (process.env.NODE_ENV === 'development') {
+        
+      }
       return undefined;
     }
-  }, [theme, mounted]);
+  }, [themeState.isHydrated, themeState.theme]);
 
   const setTheme = (newTheme: Theme): void => {
-    setThemeState(newTheme);
+    setThemeState(prev => ({
+      ...prev,
+      theme: newTheme,
+      isLoading: true,
+    }));
   };
 
   const value: ThemeContextType = {
-    theme,
+    ...themeState,
     setTheme,
-    resolvedTheme,
   };
 
-  // ✅ Prevent hydration mismatch by showing consistent content
-  if (!mounted) {
-    return (
-      <ThemeContext.Provider value={value}>
-        <div suppressHydrationWarning>{children}</div>
-      </ThemeContext.Provider>
-    );
-  }
-
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>
+      {children}
+    </ThemeContext.Provider>
   );
 }
 

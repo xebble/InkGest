@@ -2,7 +2,10 @@ const withNextIntl = require('next-intl/plugin')('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true, // Enable for better development experience
+  // React Strict Mode re-enabled with comprehensive hydration safeguards
+  // Hydration-safe components and error handling implemented to prevent
+  // "removeChild" DOM errors. See: .kiro/specs/fix-login-hydration-error/
+  reactStrictMode: true,
   experimental: {
     typedRoutes: true,
   },
