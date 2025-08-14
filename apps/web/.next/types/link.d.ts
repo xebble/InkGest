@@ -30,32 +30,32 @@ declare namespace __next_route_internal_types__ {
 
   type StaticRoutes = 
     | `/api/artists/absences`
+    | `/api/artists`
     | `/api/artists/specialties`
     | `/api/automation/jobs`
-    | `/api/artists`
     | `/api/automation/stats`
-    | `/api/communications/schedule-post-care-followups`
+    | `/api/communications/schedule-birthday-greetings`
     | `/api/communications/email`
     | `/api/communications/stats`
-    | `/api/communications/templates`
+    | `/api/communications/schedule-post-care-followups`
     | `/api/communications/whatsapp`
-    | `/api/communications/schedule-birthday-greetings`
-    | `/api/companies`
+    | `/api/communications/templates`
     | `/api/stores`
+    | `/api/companies`
   type DynamicRoutes<T extends string = string> = 
+    | `/api/artists/${SafeSlug<T>}/notifications`
+    | `/api/artists/${SafeSlug<T>}`
+    | `/api/auth/${CatchAllSlug<T>}`
+    | `/api/automation/jobs/${SafeSlug<T>}`
+    | `/api/clients/${SafeSlug<T>}/communication-preferences`
     | `/api/artists/${SafeSlug<T>}/commission`
     | `/api/artists/${SafeSlug<T>}/performance`
-    | `/api/artists/${SafeSlug<T>}`
-    | `/api/artists/${SafeSlug<T>}/notifications`
-    | `/api/automation/jobs/${SafeSlug<T>}`
-    | `/api/auth/${CatchAllSlug<T>}`
-    | `/api/clients/${SafeSlug<T>}/communication-preferences`
-    | `/api/stores/${SafeSlug<T>}`
     | `/api/companies/${SafeSlug<T>}`
+    | `/api/stores/${SafeSlug<T>}`
     | `/${SafeSlug<T>}/dashboard`
-    | `/${SafeSlug<T>}/dashboard/artists`
     | `/${SafeSlug<T>}`
     | `/${SafeSlug<T>}/appointments`
+    | `/${SafeSlug<T>}/dashboard/artists`
     | `/${SafeSlug<T>}/signin`
 
   type RouteImpl<T> = 

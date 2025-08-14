@@ -2,10 +2,10 @@ const withNextIntl = require('next-intl/plugin')('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // React Strict Mode re-enabled with comprehensive hydration safeguards
-  // Hydration-safe components and error handling implemented to prevent
-  // "removeChild" DOM errors. See: .kiro/specs/fix-login-hydration-error/
-  reactStrictMode: true,
+  // TEMPORARY: Disabling React Strict Mode to isolate hydration issue
+  // Will re-enable once the root cause is identified and fixed
+  // See: .kiro/specs/fix-login-hydration-error/
+  reactStrictMode: false,
   experimental: {
     typedRoutes: true,
   },
