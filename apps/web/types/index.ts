@@ -116,6 +116,21 @@ export type Theme = 'light' | 'dark' | 'system';
 // Locale types
 export type Locale = 'es' | 'ca' | 'en';
 
+// User preferences types
+export interface UserPreferences {
+  language?: Locale;
+  theme?: Theme;
+  notifications?: {
+    email?: boolean;
+    push?: boolean;
+    sms?: boolean;
+  };
+  dashboard?: {
+    defaultView?: string;
+    itemsPerPage?: number;
+  };
+}
+
 // API Response types
 export interface ApiResponse<T> {
   success: boolean;

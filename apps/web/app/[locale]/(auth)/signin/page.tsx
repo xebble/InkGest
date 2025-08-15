@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface SignInPageProps {
   params: Promise<{ locale: string }>;
@@ -16,6 +16,7 @@ export default function SignInPage({ params: _ }: SignInPageProps): JSX.Element 
   const [error, setError] = useState<string>('');
   
   const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations('auth');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -36,8 +37,10 @@ export default function SignInPage({ params: _ }: SignInPageProps): JSX.Element 
         // Get the session to access user data
         const session = await getSession();
         if (session?.user) {
-          // Redirect to dashboard
-          router.push('/dashboard');
+          // Use user's preferred language or current locale as fallback
+          const userLocale = session.user.preferences?.language || locale;
+          // Redirect to dashboard with user's preferred locale
+          router.push(`/${userLocale}/dashboard`);
         }
       }
     } catch (err) {

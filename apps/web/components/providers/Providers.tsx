@@ -5,8 +5,8 @@ import { SessionProvider } from './SessionProvider';
 import { ThemeProvider } from './ThemeProvider';
 import { LocaleProvider } from './LocaleProvider';
 import { ProviderErrorBoundary } from './ProviderErrorBoundary';
-import { HydrationMonitor } from './HydrationMonitor';
-import { ClientOnly } from '../ui/ClientOnly';
+import { ChunkLoadErrorBoundary } from './ChunkLoadErrorBoundary';
+import { React19CompatProvider } from './React19CompatProvider';
 import { Locale } from '../../types';
 
 interface ProvidersProps {
@@ -16,17 +16,18 @@ interface ProvidersProps {
 
 export function Providers({ children, locale }: ProvidersProps): JSX.Element {
   return (
-    <ProviderErrorBoundary>
-      <HydrationMonitor />
-      <SessionProvider>
-        <ClientOnly fallback={<div className="min-h-screen bg-white dark:bg-gray-900" />}>
-          <ThemeProvider>
-            <LocaleProvider locale={locale}>
-              {children}
-            </LocaleProvider>
-          </ThemeProvider>
-        </ClientOnly>
-      </SessionProvider>
-    </ProviderErrorBoundary>
+    <ChunkLoadErrorBoundary>
+      <ProviderErrorBoundary>
+        <React19CompatProvider>
+          <SessionProvider>
+            <ThemeProvider>
+              <LocaleProvider locale={locale}>
+                {children}
+              </LocaleProvider>
+            </ThemeProvider>
+          </SessionProvider>
+        </React19CompatProvider>
+      </ProviderErrorBoundary>
+    </ChunkLoadErrorBoundary>
   );
 }

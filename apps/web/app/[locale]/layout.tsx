@@ -16,7 +16,22 @@ async function getMessages(locale: string) {
   try {
     return (await import(`@/messages/${locale}.json`)).default;
   } catch (error) {
-    return (await import(`@/messages/es.json`)).default;
+    // Fallback to Spanish if locale messages fail to load
+    try {
+      return (await import(`@/messages/es.json`)).default;
+    } catch (fallbackError) {
+      // Return minimal messages if even fallback fails
+      return {
+        auth: {
+          signIn: 'Sign In',
+          email: 'Email',
+          password: 'Password',
+          signingIn: 'Signing in...',
+          invalidCredentials: 'Invalid credentials',
+          loginError: 'Login error'
+        }
+      };
+    }
   }
 }
 
@@ -36,6 +51,14 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        {/* Preload critical resources to prevent chunk loading issues */}
+        <link rel="preload" href="/_next/static/chunks/webpack.js" as="script" />
+        <link rel="preload" href="/_next/static/chunks/main.js" as="script" />
+        <link rel="preload" href="/_next/static/chunks/pages/_app.js" as="script" />
+        {/* Add meta tag to help with chunk loading in Next.js 15 */}
+        <meta name="next-chunk-loading" content="enabled" />
+      </head>
       <body className={inter.className} suppressHydrationWarning>
         <NextIntlClientProvider messages={messages} locale={locale}>
           <Providers locale={locale as Locale}>
