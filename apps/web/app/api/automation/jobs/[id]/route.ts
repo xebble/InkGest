@@ -4,10 +4,10 @@ import type { AutomationJob } from '../../../../../lib/services/automationServic
 // PUT /api/automation/jobs/[id] - Update automation job
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const jobId = params.id;
+    const { id: jobId } = await params;
     const body = await request.json();
 
     // Validate job ID
@@ -49,10 +49,10 @@ export async function PUT(
 // DELETE /api/automation/jobs/[id] - Delete automation job
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const jobId = params.id;
+    const { id: jobId } = await params;
 
     // Validate job ID
     if (!jobId) {

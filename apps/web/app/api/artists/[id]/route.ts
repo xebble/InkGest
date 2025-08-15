@@ -3,9 +3,9 @@ import { artistService } from '@/lib/services/artistService';
 import { UpdateArtistData, ApiResponse, ArtistWithUser } from '@/types';
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function GET(
@@ -13,7 +13,7 @@ export async function GET(
   { params }: RouteParams
 ): Promise<NextResponse> {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     const artist = await artistService.getArtistById(id);
 
@@ -50,7 +50,7 @@ export async function PUT(
   { params }: RouteParams
 ): Promise<NextResponse> {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const data: UpdateArtistData = { ...body, id };
 
@@ -89,7 +89,7 @@ export async function DELETE(
   { params }: RouteParams
 ): Promise<NextResponse> {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     await artistService.deleteArtist(id);
 

@@ -1,11 +1,10 @@
 'use client';
 
-import {
+import React, {
   createContext,
   useContext,
   useEffect,
   useState,
-  ReactNode,
 } from 'react';
 import { Theme } from '../../types';
 import { 
@@ -29,7 +28,7 @@ interface ThemeContextType extends ThemeState {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 interface ThemeProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
 }

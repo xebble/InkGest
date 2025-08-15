@@ -3,9 +3,9 @@ import { notificationService } from '@/lib/services/notificationService';
 import { ApiResponse, ArtistNotification } from '@/types';
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function GET(
@@ -13,7 +13,7 @@ export async function GET(
   { params }: RouteParams
 ): Promise<NextResponse> {
   try {
-    const { id: artistId } = params;
+    const { id: artistId } = await params;
     const { searchParams } = new URL(request.url);
     
     const limitStr = searchParams.get('limit');
@@ -67,7 +67,7 @@ export async function POST(
   { params }: RouteParams
 ): Promise<NextResponse> {
   try {
-    const { id: artistId } = params;
+    const { id: artistId } = await params;
     const body = await request.json();
     
     const { type, title, message, data } = body;

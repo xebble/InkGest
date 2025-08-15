@@ -3,9 +3,9 @@ import { commissionService } from '@/lib/services/commissionService';
 import { ApiResponse, ArtistPerformanceReport } from '@/types';
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function GET(
@@ -13,7 +13,7 @@ export async function GET(
   { params }: RouteParams
 ): Promise<NextResponse> {
   try {
-    const { id: artistId } = params;
+    const { id: artistId } = await params;
     const { searchParams } = new URL(request.url);
     
     const startDateStr = searchParams.get('startDate');

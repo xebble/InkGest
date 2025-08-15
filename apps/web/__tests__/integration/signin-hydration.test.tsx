@@ -325,7 +325,14 @@ describe('SignIn Page Hydration Tests', () => {
     it('should handle successful form submission correctly', async () => {
       mockSignIn.mockResolvedValue({ error: null, ok: true, status: 200, url: null });
       mockGetSession.mockResolvedValue({
-        user: { id: '1', email: 'test@example.com' },
+        user: { 
+          id: '1', 
+          email: 'test@example.com',
+          name: 'Test User',
+          role: 'ADMIN' as const,
+          companyId: 'company-1',
+          storeIds: ['store-1']
+        },
         expires: '2024-12-31',
       });
 
@@ -428,7 +435,14 @@ describe('SignIn Page Hydration Tests', () => {
         )
       );
       mockGetSession.mockResolvedValue({
-        user: { id: '1', email: 'test@example.com' },
+        user: { 
+          id: '1', 
+          email: 'test@example.com',
+          name: 'Test User',
+          role: 'ADMIN' as const,
+          companyId: 'company-1',
+          storeIds: ['store-1']
+        },
         expires: '2024-12-31',
       });
 

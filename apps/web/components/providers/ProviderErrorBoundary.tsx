@@ -1,6 +1,6 @@
 'use client';
 
-import { Component, ReactNode, ErrorInfo } from 'react';
+import React, { Component, ErrorInfo } from 'react';
 
 interface ProviderErrorBoundaryState {
   hasError: boolean;
@@ -9,8 +9,8 @@ interface ProviderErrorBoundaryState {
 }
 
 interface ProviderErrorBoundaryProps {
-  children: ReactNode;
-  fallback?: ReactNode;
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
 }
 
 export class ProviderErrorBoundary extends Component<
@@ -91,7 +91,7 @@ export class ProviderErrorBoundary extends Component<
     });
   };
 
-  override render(): ReactNode {
+  override render(): React.ReactNode {
     if (this.state.hasError) {
       // Custom fallback UI provided by parent
       if (this.props.fallback) {

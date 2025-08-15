@@ -1,10 +1,10 @@
 'use client';
 
+import React from 'react';
 import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react';
-import { ReactNode } from 'react';
 
 interface SessionProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export function SessionProvider({ children }: SessionProviderProps): JSX.Element {
@@ -19,7 +19,7 @@ export function SessionProvider({ children }: SessionProviderProps): JSX.Element
       // Prevent initial session fetch during hydration
       refetchWhenOffline={false}
     >
-      {children}
+      <>{children}</>
     </NextAuthSessionProvider>
   );
 }

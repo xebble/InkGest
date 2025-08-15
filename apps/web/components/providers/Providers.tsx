@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import React from 'react';
 import { SessionProvider } from './SessionProvider';
 import { ThemeProvider } from './ThemeProvider';
 import { LocaleProvider } from './LocaleProvider';
@@ -10,7 +10,7 @@ import { ClientOnly } from '../ui/ClientOnly';
 import { Locale } from '../../types';
 
 interface ProvidersProps {
-  children: ReactNode;
+  children: React.ReactNode;
   locale: Locale;
 }
 

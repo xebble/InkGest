@@ -3,7 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import { signIn, getSession } from 'next-auth/react';
 import SignInPage from '@/app/[locale]/(auth)/signin/page';
-import AuthLayout from '@/app/[locale]/(auth)/layout';
+// import AuthLayout from '@/app/[locale]/(auth)/layout';
 import { Providers } from '@/components/providers/Providers';
 
 // Mock Next.js navigation
@@ -254,8 +254,8 @@ describe('SignIn Page End-to-End Tests', () => {
       await act(async () => {
         const mockMatchMedia = window.matchMedia as jest.MockedFunction<typeof window.matchMedia>;
         const mediaQueryList = mockMatchMedia('(prefers-color-scheme: dark)');
-        if (mediaQueryList._triggerChange) {
-          mediaQueryList._triggerChange(true);
+        if ((mediaQueryList as any)._triggerChange) {
+          (mediaQueryList as any)._triggerChange(true);
         }
       });
 
@@ -277,7 +277,14 @@ describe('SignIn Page End-to-End Tests', () => {
     it('should handle complete login flow without DOM errors', async () => {
       mockSignIn.mockResolvedValue({ error: null, ok: true, status: 200, url: null });
       mockGetSession.mockResolvedValue({
-        user: { id: '1', email: 'test@example.com', name: 'Test User' },
+        user: { 
+          id: '1', 
+          email: 'test@example.com', 
+          name: 'Test User',
+          role: 'ADMIN' as const,
+          companyId: 'company-1',
+          storeIds: ['store-1']
+        },
         expires: '2024-12-31',
       });
 

@@ -38,7 +38,7 @@ const defaultProps = {
 const renderWithIntl = (component: React.ReactElement) => {
   return render(
     <NextIntlClientProvider messages={messages} locale="en">
-      {component}
+      <div>{component}</div>
     </NextIntlClientProvider>
   );
 };

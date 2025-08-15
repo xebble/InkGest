@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Locale } from '../../types';
 
@@ -13,7 +13,7 @@ interface LocaleContextType {
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
 interface LocaleProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
   locale: Locale;
 }
 

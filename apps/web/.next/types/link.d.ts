@@ -29,34 +29,35 @@ declare namespace __next_route_internal_types__ {
     S extends `${string}${SearchOrHash}` ? never : S
 
   type StaticRoutes = 
-    | `/api/artists/absences`
+    | `/`
     | `/api/artists`
+    | `/api/artists/absences`
     | `/api/artists/specialties`
     | `/api/automation/jobs`
     | `/api/automation/stats`
-    | `/api/communications/schedule-birthday-greetings`
     | `/api/communications/email`
-    | `/api/communications/stats`
+    | `/api/communications/schedule-birthday-greetings`
     | `/api/communications/schedule-post-care-followups`
-    | `/api/communications/whatsapp`
+    | `/api/communications/stats`
     | `/api/communications/templates`
-    | `/api/stores`
+    | `/api/communications/whatsapp`
     | `/api/companies`
+    | `/api/stores`
   type DynamicRoutes<T extends string = string> = 
-    | `/api/artists/${SafeSlug<T>}/notifications`
+    | `/${SafeSlug<T>}`
+    | `/${SafeSlug<T>}/appointments`
+    | `/${SafeSlug<T>}/dashboard`
+    | `/${SafeSlug<T>}/dashboard/artists`
+    | `/${SafeSlug<T>}/signin`
     | `/api/artists/${SafeSlug<T>}`
+    | `/api/artists/${SafeSlug<T>}/commission`
+    | `/api/artists/${SafeSlug<T>}/notifications`
+    | `/api/artists/${SafeSlug<T>}/performance`
     | `/api/auth/${CatchAllSlug<T>}`
     | `/api/automation/jobs/${SafeSlug<T>}`
     | `/api/clients/${SafeSlug<T>}/communication-preferences`
-    | `/api/artists/${SafeSlug<T>}/commission`
-    | `/api/artists/${SafeSlug<T>}/performance`
     | `/api/companies/${SafeSlug<T>}`
     | `/api/stores/${SafeSlug<T>}`
-    | `/${SafeSlug<T>}/dashboard`
-    | `/${SafeSlug<T>}`
-    | `/${SafeSlug<T>}/appointments`
-    | `/${SafeSlug<T>}/dashboard/artists`
-    | `/${SafeSlug<T>}/signin`
 
   type RouteImpl<T> = 
     | StaticRoutes
@@ -68,8 +69,8 @@ declare namespace __next_route_internal_types__ {
 }
 
 declare module 'next' {
-  export { default } from 'next/types/index.js'
-  export * from 'next/types/index.js'
+  export { default } from 'next/types.js'
+  export * from 'next/types.js'
 
   export type Route<T extends string = string> =
     __next_route_internal_types__.RouteImpl<T>
@@ -124,5 +125,23 @@ declare module 'next/navigation' {
     prefetch<RouteType>(href: __next_route_internal_types__.RouteImpl<RouteType>): void
   }
 
-  export declare function useRouter(): AppRouterInstance;
+  export function useRouter(): AppRouterInstance;
+}
+
+declare module 'next/form' {
+  import type { FormProps as OriginalFormProps } from 'next/dist/client/form.js'
+
+  type FormRestProps = Omit<OriginalFormProps, 'action'>
+
+  export type FormProps<RouteInferType> = {
+    /**
+     * `action` can be either a `string` or a function.
+     * - If `action` is a string, it will be interpreted as a path or URL to navigate to when the form is submitted.
+     *   The path will be prefetched when the form becomes visible.
+     * - If `action` is a function, it will be called when the form is submitted. See the [React docs](https://react.dev/reference/react-dom/components/form#props) for more.
+     */
+    action: __next_route_internal_types__.RouteImpl<RouteInferType> | ((formData: FormData) => void)
+  } & FormRestProps
+
+  export default function Form<RouteType>(props: FormProps<RouteType>): JSX.Element
 }

@@ -5,10 +5,10 @@ import { z } from 'zod';
 // GET /api/clients/[id]/communication-preferences - Get client communication preferences
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const clientId = params.id;
+    const { id: clientId } = await params;
 
     if (!clientId) {
       return NextResponse.json(
@@ -56,10 +56,10 @@ export async function GET(
 // PUT /api/clients/[id]/communication-preferences - Update client communication preferences
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const clientId = params.id;
+    const { id: clientId } = await params;
     const body = await request.json();
 
     if (!clientId) {

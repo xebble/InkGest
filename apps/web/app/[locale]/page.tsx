@@ -22,7 +22,7 @@ export default async function HomePage({ params }: HomePageProps): Promise<JSX.E
         <div className="mt-8 text-center space-y-4">
           <div>
             <Link
-              href="/signin"
+              href={`/${locale}/signin`}
               className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md text-lg font-medium inline-block"
             >
               Iniciar Sesión

@@ -1,10 +1,10 @@
 'use client';
 
-import { ReactNode } from 'react';
+import React from 'react';
 import { AppHeader } from './AppHeader';
 
 interface AppLayoutProps {
-  children: ReactNode;
+  children: React.ReactNode;
   title?: string | undefined;
   className?: string;
 }

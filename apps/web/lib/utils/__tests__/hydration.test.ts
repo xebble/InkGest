@@ -191,7 +191,10 @@ describe('Hydration Utilities', () => {
   describe('handleStrictModeError', () => {
     beforeEach(() => {
       // Mock development environment
-      process.env.NODE_ENV = 'development';
+      Object.defineProperty(process.env, 'NODE_ENV', {
+        value: 'development',
+        writable: true
+      });
     });
 
     it('should handle removeChild errors in strict mode gracefully', () => {
