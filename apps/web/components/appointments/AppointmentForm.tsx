@@ -14,7 +14,7 @@ import type {
 import type { AppointmentStatus } from '../../types';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
-import { Select } from '../ui/Select';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../ui/Select';
 import { Textarea } from '../ui/Textarea';
 import { Modal } from '../ui/Modal';
 import { Card } from '../ui/Card';
@@ -320,14 +320,18 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
           </label>
           <Select
             value={formData.artistId}
-            onChange={(e) => handleFieldChange('artistId', e.target.value)}
-            placeholder={t('selectArtist')}
+            onValueChange={(value) => handleFieldChange('artistId', value)}
           >
-            {artists.map((artist) => (
-              <option key={artist.id} value={artist.id}>
-                {artist.user?.name || 'Unknown Artist'}
-              </option>
-            ))}
+            <SelectTrigger>
+              <SelectValue placeholder={t('selectArtist')} />
+            </SelectTrigger>
+            <SelectContent>
+              {artists.map((artist) => (
+                <SelectItem key={artist.id} value={artist.id}>
+                  {artist.user?.name || 'Unknown Artist'}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
           {getFieldError('artistId') && (
             <p className="text-sm text-red-600">{getFieldError('artistId')}</p>
@@ -342,14 +346,18 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
           </label>
           <Select
             value={formData.serviceId}
-            onChange={(e) => handleFieldChange('serviceId', e.target.value)}
-            placeholder={t('selectService')}
+            onValueChange={(value) => handleFieldChange('serviceId', value)}
           >
-            {services.map((service) => (
-              <option key={service.id} value={service.id}>
-                {service.name} - {service.duration}min - €{service.price}
-              </option>
-            ))}
+            <SelectTrigger>
+              <SelectValue placeholder={t('selectService')} />
+            </SelectTrigger>
+            <SelectContent>
+              {services.map((service) => (
+                <SelectItem key={service.id} value={service.id}>
+                  {service.name} - {service.duration}min - €{service.price}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
           {getFieldError('serviceId') && (
             <p className="text-sm text-red-600">{getFieldError('serviceId')}</p>
@@ -363,16 +371,20 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
             <span>{t('room')}</span>
           </label>
           <Select
-            value={formData.roomId}
-            onChange={(e) => handleFieldChange('roomId', e.target.value)}
-            placeholder={t('selectRoom')}
+            value={formData.roomId || ''}
+            onValueChange={(value) => handleFieldChange('roomId', value)}
           >
-            <option value="">{t('noRoom')}</option>
-            {rooms.filter(room => room.isAvailable).map((room) => (
-              <option key={room.id} value={room.id}>
-                {room.name}
-              </option>
-            ))}
+            <SelectTrigger>
+              <SelectValue placeholder={t('selectRoom')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">{t('noRoom')}</SelectItem>
+              {rooms.filter(room => room.isAvailable).map((room) => (
+                <SelectItem key={room.id} value={room.id}>
+                  {room.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
         </div>
 
@@ -454,13 +466,18 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
             </label>
             <Select
               value={status}
-              onChange={(e) => setStatus(e.target.value as AppointmentStatus)}
+              onValueChange={(value) => setStatus(value as AppointmentStatus)}
             >
-              {APPOINTMENT_STATUSES.map((statusOption) => (
-                <option key={statusOption} value={statusOption}>
-                  {t(`status.${statusOption.toLowerCase()}`)}
-                </option>
-              ))}
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {APPOINTMENT_STATUSES.map((statusOption) => (
+                  <SelectItem key={statusOption} value={statusOption}>
+                    {t(`status.${statusOption.toLowerCase()}`)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
             </Select>
           </div>
         )}

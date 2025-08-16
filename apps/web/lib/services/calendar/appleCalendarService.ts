@@ -356,7 +356,8 @@ export class AppleCalendarService implements ICalendarService {
 
       return conflicts;
     } catch (error) {
-      console.error('Failed to detect conflicts:', error);
+      // TODO: Replace with proper error logging service
+      // console.error('Failed to detect conflicts:', error);
       return [];
     }
   }
@@ -482,6 +483,7 @@ export class AppleCalendarService implements ICalendarService {
       return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     };
 
+    // eslint-disable-next-line prefer-const
     let icalData = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',

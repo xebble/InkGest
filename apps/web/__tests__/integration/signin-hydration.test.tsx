@@ -331,7 +331,20 @@ describe('SignIn Page Hydration Tests', () => {
           name: 'Test User',
           role: 'ADMIN' as const,
           companyId: 'company-1',
-          storeIds: ['store-1']
+          storeIds: ['store-1'],
+          preferences: {
+            language: 'en',
+            theme: 'light',
+            notifications: {
+              email: true,
+              push: true,
+              sms: false
+            },
+            dashboard: {
+              defaultView: 'calendar',
+              itemsPerPage: 10
+            }
+          }
         },
         expires: '2024-12-31',
       });
@@ -441,7 +454,20 @@ describe('SignIn Page Hydration Tests', () => {
           name: 'Test User',
           role: 'ADMIN' as const,
           companyId: 'company-1',
-          storeIds: ['store-1']
+          storeIds: ['store-1'],
+          preferences: {
+            language: 'en',
+            theme: 'light',
+            notifications: {
+              email: true,
+              push: true,
+              sms: false
+            },
+            dashboard: {
+              defaultView: 'calendar',
+              itemsPerPage: 10
+            }
+          }
         },
         expires: '2024-12-31',
       });

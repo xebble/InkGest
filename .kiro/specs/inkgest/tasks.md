@@ -103,10 +103,6 @@
 - [ ] 7. Sistema de citas y calendario
 
 - [x] 7.1 Componente de calendario visual
-
-
-
-
   - Crear vista de calendario drag-and-drop con tipos estrictos
   - Implementar filtros por artista, servicio y estado
   - Desarrollar creación rápida de citas con validación
@@ -117,11 +113,6 @@
   - _Requisitos: 3_
 
 - [x] 7.2 Integración con Google Calendar, Microsoft y Apple
-
-
-
-
-
   - Implementar sincronización bidireccional con Google Calendar API, Microsoft Calendar y Apple
   - Crear servicio de gestión de eventos con manejo de errores
   - Desarrollar detección y resolución de conflictos de horarios
@@ -129,7 +120,8 @@
   - Escribir tests de integración para Google Calendar, Microsoft y Apple
   - _Requisitos: 3, 5_
 
-- [ ] 7.3 Sistema de recordatorios automáticos
+- [x] 7.3 Sistema de recordatorios automáticos
+
   - Crear servicio de envío de recordatorios por email y WhatsApp
   - Implementar programación de recordatorios 24h y 2h antes
   - Desarrollar templates personalizables de recordatorios
