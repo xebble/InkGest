@@ -121,22 +121,23 @@
   - _Requisitos: 3, 5_
 
 - [x] 7.3 Sistema de recordatorios automáticos
-
   - Crear servicio de envío de recordatorios por email y WhatsApp
   - Implementar programación de recordatorios 24h y 2h antes
   - Desarrollar templates personalizables de recordatorios
   - Crear sistema de confirmación de citas
   - _Requisitos: 4_
 
-- [ ] 8. Reservas online y perfil público
-- [ ] 8.1 Portal de reservas público
+- [x] 8. Reservas online y perfil público
+
+
+- [x] 8.1 Portal de reservas público
   - Crear interfaz pública para reserva de citas
   - Implementar selección de servicios, artistas y horarios disponibles
   - Desarrollar sistema de disponibilidad en tiempo real
   - Crear formulario de datos del cliente con validación
   - _Requisitos: 4_
 
-- [ ] 8.2 Panel de cliente
+- [x] 8.2 Panel de cliente
   - Desarrollar dashboard personal para clientes
   - Implementar gestión de citas y historial de servicios
   - Crear sistema de consultas y comunicación con el estudio
